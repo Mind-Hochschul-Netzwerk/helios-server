@@ -14,9 +14,9 @@ class ElectionForm(forms.Form):
   name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'size':60}), help_text='der Name deiner Wahl, z. B. Vorstandswahl 2030')
   description = forms.CharField(max_length=4000, widget=forms.Textarea(attrs={'cols': 70, 'wrap': 'soft'}), required=False)
   election_type = forms.ChoiceField(label="Typ", choices = Election.ELECTION_TYPES)
-  use_voter_aliases = forms.BooleanField(required=False, initial=False, help_text='Wenn ausgewählt, werden Wähleridentitäten im Stimmverfolgungszentrum durch Aliase wie „V12“ ersetzt')
+  use_voter_aliases = forms.BooleanField(required=False, initial=True, label="Wähler-Aliase verwenden", help_text='Wenn ausgewählt, werden Wähleridentitäten im Stimmverfolgungszentrum durch Aliase wie „V12“ ersetzt')
   #use_advanced_audit_features = forms.BooleanField(required=False, initial=True, help_text='disable this only if you want a simple election with reduced security but a simpler user interface')
-  randomize_answer_order = forms.BooleanField(required=False, initial=False, help_text='Aktiviere dies, wenn die Antwortreihenfolge für jeden Wähler zufällig sein soll')
+  randomize_answer_order = forms.BooleanField(required=False, initial=False, label="Zufällige Reihenfolge der Antworten", help_text='Aktiviere dies, wenn die Antwortreihenfolge für jeden Wähler zufällig sein soll')
   private_p = forms.BooleanField(required=False, initial=False, label="Privat?", help_text='Eine private Wahl ist nur für registrierte Wähler sichtbar.')
   help_email = forms.CharField(required=False, initial="", label="E-Mail-Adresse für Hilfe", help_text='Eine E-Mail-Adresse, über die Wähler Hilfe anfragen können.')
 

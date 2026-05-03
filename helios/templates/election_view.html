@@ -29,14 +29,14 @@
 {% if admin_p %}
 {% if not election.private_p %}
 {% if election.featured_p %}
-this {{election.election_type}} is featured on the front page.
+Diese {{election.election_type}} wird auf der Startseite angezeigt.
 {% if can_feature_p %}
-[<a href="{% url "election@set-featured" election.uuid %}?featured_p=0">unfeature it</a>]
+[<a href="{% url "election@set-featured" election.uuid %}?featured_p=0">nicht anzeigen</a>]
 {% endif %}
 {% else %}
-this {{election.election_type}} is <u>not</u> featured on the front page.
+Diese {{election.election_type}} wird <u>nicht</u> auf der Startseite angezeigt.
 {% if can_feature_p %}
-[<a href="{% url "election@set-featured" election.uuid %}?featured_p=1">feature it</a>]
+[<a href="{% url "election@set-featured" election.uuid %}?featured_p=1">anzeigen</a>]
 {% endif %}
 {% endif %}
 {% endif %}
@@ -143,10 +143,10 @@ Treuhänder-Entschlüsselungen kombinieren und Ergebnisse berechnen
 {% endif %}
 </a><br />
 {% if election.num_trustees == 1 %}
-The result will be computed and shown to you, the administrator, only.
+Das Ergebnis wird berechnet und nur für dich, den Administrator, angezeigt.
 {% else %}
-The decryption shares from the trustees will be combined and the tally computed.<br />
-Once you do this, the tally will visible to you, the administrator, only.
+Die Entschlüsselungsanteile der Treuhänder werden kombiniert und die Auszählung berechnet.<br />
+Sobald du dies tust, ist die Auszählung nur für dich, den Administrator, sichtbar.
 {% endif %}
 {% else %}
 <a href="{% url "election@trustees@view" election.uuid %}">Treuhänder (für Entschlüsselung)</a>
@@ -239,12 +239,12 @@ Dein Wähler-Alias ist {{voter.alias}}.
 {% else %}
 {% if election.openreg %}
 {% if eligible_p %}
-Du bist berechtigt, bei dieser Wahl abzustimmen.
+Du bist berechtigt abzustimmen.
 {% else %}
-You are <em>not eligible</em> to vote in this {{election.election_type}}.
+Du bist <em>nicht berechtigt</em> abzustimmen.
 {% endif %}
 {% else %}
-You are <em>not eligible</em> to vote in this {{election.election_type}}.
+Du bist <em>nicht berechtigt</em> abzustimmen.
 <br />
 {% endif %}
 {% endif %}
@@ -301,7 +301,7 @@ Jeder kann bei dieser Wahl abstimmen.
 {% if not election.voting_has_started %}
 <p style="font-size: 1.2em;">
   <br>
-  <a href="{{SECURE_URL_HOST}}/booth/vote.html?election_url={% url "election@home" election.uuid %}">Wahllokal Vorschau</a>
+  <a href="{{SECURE_URL_HOST}}/booth/vote.html?election_url={% url "election@home" election.uuid %}">Vorschau der Wahlkabine</a>
 </p>
 {% endif %}
 
@@ -311,7 +311,7 @@ Jeder kann bei dieser Wahl abstimmen.
 verifiziere die <a target="_blank" href="/verifier/verify.html?election_url={% url "election@home" election.uuid %}">Wahlauszählung</a>.
 {% endif %}
 
-überprüfe das <a href="{{vote_url}}">Wahllokal</a>.
+überprüfe die <a href="{{vote_url}}">Wahlkabine</a>.
 </p>
 
 {% endif %}

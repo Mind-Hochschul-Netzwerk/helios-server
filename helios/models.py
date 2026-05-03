@@ -58,8 +58,8 @@ class Election(HeliosModel):
   name = models.CharField(max_length=250)
 
   ELECTION_TYPES = (
-    ('election', 'Election'),
-    ('referendum', 'Referendum')
+    ('election', 'Wahl'),
+    ('referendum', 'Abstimmung')
     )
 
   election_type = models.CharField(max_length=250, null=False, default='election', choices = ELECTION_TYPES)
@@ -1359,33 +1359,33 @@ class EmailOptOut(models.Model):
   opted_out_at = models.DateTimeField(auto_now_add=True)
   user_agent = models.CharField(max_length=500, null=True, blank=True, help_text="User agent when opt-out was requested")
   ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address when opt-out was requested")
-  
+
   class Meta:
     app_label = 'helios'
-    
+
   def __str__(self):
     return f"EmailOptOut {self.email_hash[:8]}... at {self.opted_out_at}"
-    
+
   @classmethod
   def is_opted_out(cls, email):
     if not email:
       return False
-      
+
     email_hash = utils.hash_email(email)
     if not email_hash:
       return False
-      
+
     return cls.objects.filter(email_hash=email_hash).exists()
-    
-  @classmethod  
+
+  @classmethod
   def add_opt_out(cls, email, user_agent=None, ip_address=None):
     if not email:
       return None
-      
+
     email_hash = utils.hash_email(email)
     if not email_hash:
       return None
-      
+
     opt_out, created = cls.objects.get_or_create(
       email_hash=email_hash,
       defaults={
@@ -1393,17 +1393,17 @@ class EmailOptOut(models.Model):
         'ip_address': ip_address
       }
     )
-    
+
     return opt_out
-    
+
   @classmethod
   def remove_opt_out(cls, email):
     if not email:
       return False
-      
+
     email_hash = utils.hash_email(email)
     if not email_hash:
       return False
-      
+
     deleted_count, _ = cls.objects.filter(email_hash=email_hash).delete()
     return deleted_count > 0

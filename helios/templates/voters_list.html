@@ -10,7 +10,7 @@
 {% if election.openreg %}
 {{election.pretty_eligibility|safe}}
 {% else %}
-<em>Nur die hier aufgeführten Wähler</em>.
+<em>Nur die hier aufgeführten Wahlberechtigten</em>.
 {% endif %}
 </p>
 
@@ -20,7 +20,7 @@
 {% else %}
 <form method="post" action="{% url "election@voters@eligibility" election.uuid %}">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-<input type="radio" name="eligibility" value="openreg" {% if election.openreg and not election.eligibility %}CHECKED{% endif %} /> jeder kann abstimmen<br />
+<input type="radio" name="eligibility" value="openreg" {% if election.openreg and not election.eligibility %}CHECKED{% endif %} /> Alle MHN-Mitglieder können abstimmen<br />
 <input type="radio" name="eligibility" value="closedreg" {% if not election.openreg %}CHECKED{% endif %} /> nur unten explizit aufgeführte Wahlberechtigte können abstimmen<br />
 {% if categories %}
 <input type="radio" name="eligibility" value="limitedreg" {% if election.eligibility %}CHECKED{% endif %} /> only voters who are members of
@@ -65,14 +65,14 @@
 {% if upload_p and not election.openreg %}
 <p>
 {% if can_modify_voters %}
-<a class="button" href="{% url "election@voters@upload" election_uuid=election.uuid %}">Wähler massenhaft hochladen</a>
+<a class="button" href="{% url "election@voters@upload" election_uuid=election.uuid %}">Wählerliste hochladen</a>
 {% else %}
-<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{modify_voters_disabled_reason}}">Wähler massenhaft hochladen (deaktiviert: {{modify_voters_disabled_reason}})</button>
+<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{modify_voters_disabled_reason}}">Wählerliste hochladen (deaktiviert: {{modify_voters_disabled_reason}})</button>
 {% endif %}
 </p>
 
 {% if voter_files %}
-Vorherige Massen-Uploads:
+Vorherige Listen-Uploads:
 <ul>
 {% for vf in voter_files %}
 <li>
