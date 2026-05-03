@@ -35,14 +35,14 @@ up: .check-env .create-dirs ## Alle Services starten (ohne Neubau)
 	@echo "$(GREEN)[helios]$(NC) Starte Infrastruktur..."
 	@$(COMPOSE) up -d database rabbitmq
 	@echo "$(GREEN)[helios]$(NC) Warte auf PostgreSQL..."
-	@until $(COMPOSE) exec -T database pg_isready -U "$$(grep '^POSTGRES_USER=' $(ENV_FILE) | cut -d= -f2)" &>/dev/null; do sleep 1; done
+	@until $(COMPOSE) exec -T database pg_isready -U user &>/dev/null; do sleep 1; done
 	@echo "$(GREEN)[helios]$(NC) Warte auf RabbitMQ..."
 	@until $(COMPOSE) exec -T rabbitmq sh -c 'rabbitmqctl status' &>/dev/null 2>&1; do sleep 2; done
 	@echo "$(GREEN)[helios]$(NC) Führe Datenbankmigrationen aus..."
 	@$(COMPOSE) run --rm app uv run python manage.py migrate --noinput
 	@echo "$(GREEN)[helios]$(NC) Starte App und Worker..."
 	@$(COMPOSE) up -d app worker
-	@echo "$(GREEN)[helios]$(NC) ✅ Helios läuft: $$(grep '^URL_HOST=' $(ENV_FILE) | cut -d= -f2)"
+	@echo "$(GREEN)[helios]$(NC) ✅ Helios läuft: https://$$(grep '^SERVICENAME=' $(ENV_FILE) | cut -d= -f2).$$(grep '^DOMAINNAME=' $(ENV_FILE) | cut -d= -f2)"
 
 .PHONY: build
 build: .check-env ## Docker-Image neu bauen (nach git pull oder Dockerfile-Änderung)
