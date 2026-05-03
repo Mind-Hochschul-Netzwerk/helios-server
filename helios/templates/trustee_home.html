@@ -1,29 +1,29 @@
 {% extends "helios/templates/cryptobase.html" %}
 
 {% block content %}
-  <h2 class="title">{{election.name}} &mdash; Trustee {{trustee.name}} Home</span></h2>
+  <h2 class="title">{{election.name}} &mdash; Treuhänder {{trustee.name}} Startseite</span></h2>
 
 <p>
 {% if trustee.public_key_hash %}
-You have successfully uploaded your public key.<br />
-Your public key fingerprint is: <b>{{trustee.public_key_hash}}</b>.<br />
-You can <a href="{% url "election@trustee@check-sk" election.uuid trustee.uuid %}">verify that you have the right secret key</a>.
+Du hast deinen öffentlichen Schlüssel erfolgreich hochgeladen.<br />
+Dein öffentlicher Schlüssel-Fingerabdruck ist: <b>{{trustee.public_key_hash}}</b>.<br />
+Du kannst <a href="{% url "election@trustee@check-sk" election.uuid trustee.uuid %}">überprüfen, ob du den richtigen geheimen Schlüssel hast</a>.
 {% else %}
-<a href="{% url "election@trustee@key-generator" election.uuid trustee.uuid %}">setup your key</a>
+<a href="{% url "election@trustee@key-generator" election.uuid trustee.uuid %}">richte deinen Schlüssel ein</a>
 {% endif %}
 </p>
 
 <p>
 {% if election.encrypted_tally %}
 {% if trustee.decryption_factors %}
-You have successfully uploaded your decryption.
+Du hast deine Entschlüsselung erfolgreich hochgeladen.
 {% else %}
-    The encrypted tally for this election is ready.<br />
-    <a href="{% url "election@trustee@decrypt-and-prove" election.uuid trustee.uuid %}">decrypt with your key</a>
+    Die verschlüsselte Auszählung für diese Wahl ist bereit.<br />
+    <a href="{% url "election@trustee@decrypt-and-prove" election.uuid trustee.uuid %}">mit deinem Schlüssel entschlüsseln</a>
 {% endif %}
 {% else %}
-Once the tally is computed, come back here to provide your secret key for decryption purposes.<br />
-You should keep the email with your trustee homepage link, which contains the credentials needed to get back here.
+Sobald die Auszählung berechnet ist, komme hierher zurück, um deinen geheimen Schlüssel zum Entschlüsseln einzugeben.<br />
+Du solltest die E-Mail mit deinem Treuhänder-Homepage-Link aufbewahren, die die Anmeldedaten enthält, um hierher zurückzukehren.
 {% endif %}
 </p>
 

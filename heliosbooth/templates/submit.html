@@ -1,24 +1,24 @@
 
-<h3>Submit Your Encrypted Ballot</h3>
+<h3>Übermittle deinen verschlüsselten Stimmzettel</h3>
 
 <p>
-All information, other than your encrypted ballot,<br />
-has been removed from memory.
+Alle Informationen, außer deinem verschlüsselten Stimmzettel,<br />
+wurden aus dem Speicher entfernt.
 </p>
 
 <p>
-As a reminder, your ballot tracking number is:<br />
+Zur Erinnerung: Deine Stimmzettel-Tracking-Nummer lautet:<br />
 <b><tt style="font-size: 16pt;">{$T.encrypted_vote_hash}</tt></b>
 </p>
 
 <p>
-According to the election definition file, this ballot will be submitted to:
+Gemäß der Wahldefinitionsdatei wird dieser Stimmzettel an Folgendes gesendet:
 </p>
 
 <p><b><tt style="font-size:1.3em;">{$T.cast_url}</tt></b></p>
 
 <p>
-    where you will log in to validate your eligibility to vote.
+    wo du dich anmeldest, um deine Wahlberechtigung zu überprüfen.
 </p>
 
 <form method="POST" onsubmit="BOOTH.do_done();" action="{$T.cast_url}" id="send_ballot_form" class="prettyform">
@@ -29,7 +29,7 @@ According to the election definition file, this ballot will be submitted to:
 </textarea>
 <div id="submit_button">
   <label for="submit">&nbsp;</label>
-  <input type="submit" value="Submit Ballot" class="pretty" />
+  <input type="submit" value="Stimmzettel abgeben" class="pretty" />
 </div>
 </form>
 

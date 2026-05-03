@@ -7,7 +7,7 @@ var SECRET_KEY;
 
 function before_create() {
 {% if election_type == "one" %}
-    return confirm('Have you made sure to copy the private key to a safe place?\n\nOnce you click OK, Helios will not be able to recover the secret key without your help!');
+    return confirm('Hast du daran gedacht, den privaten Schlüssel an einem sicheren Ort zu speichern?\n\nSobald du auf OK klickst, kann Helios das Geheimnis nicht ohne deine Hilfe wiederherstellen!');
 {% else %}
     return true;
 {% endif %}
@@ -17,7 +17,7 @@ function generate_keypair() {
     ELGAMAL_PARAMS = ElGamal.Params.fromJSONObject({{eg_params_json|safe}});
 
     $('#generate_button').hide();
-    
+
     try {
         SECRET_KEY = ELGAMAL_PARAMS.generate();
     } catch (e) {
@@ -25,7 +25,7 @@ function generate_keypair() {
     }
 
     $('#pk').val(jQuery.toJSON(SECRET_KEY.pk));
-    
+
 {% if election_type == "one" %}
     $('#sk_textarea').val(jQuery.toJSON(SECRET_KEY));
     $('#sk_form').show();
@@ -46,14 +46,14 @@ $(document).ready(function() {
 });
 </script>
 
-  <h2 class="title">Create a New Election: {{name}}</h2>
+  <h2 class="title">Neue Wahl erstellen: {{name}}</h2>
 {% if election_type == "helios" %}
-  <b>An election managed by Helios</b>.
+  <b>Eine von Helios verwaltete Wahl</b>.
 {% else %}
 {% if election_type == "one" %}
-  <b>An election managed by you, the single administrator</b>.
+  <b>Eine von Ihnen als einzelnem Administrator verwaltete Wahl</b>.
 {% else %}
-<b>An election managed by multiple trustees</b>.
+<b>Eine von mehreren Treuhändern verwaltete Wahl</b>.
 {% endif %}
 {% endif %}
   <form class="prettyform" action="{% url "helios.views.election_new_3" %}" method="POST" id="create_election_form" onsubmit="return before_create();">
@@ -63,10 +63,10 @@ $(document).ready(function() {
       <input type="hidden" name="private_key" id="sk" value="" /><br />
 
 {% if election_type != "multiple" %}
-  <label for="generate_key">&nbsp;</label><button class="button" onclick="generate_keypair(); return false;" id="generate_button">Generate Election Keys</button>
+  <label for="generate_key">&nbsp;</label><button class="button" onclick="generate_keypair(); return false;" id="generate_button">Wahlschlüssel generieren</button>
 {% else %}
 <div id="trustees">
-<h3>Trustees (up to 5)</h3>
+<h3>Treuhänder (bis zu 5)</h3>
 <label for="">&nbsp;</label> <input type="text" name="trustee" /><br />
 <label for="">&nbsp;</label> <input type="text" name="trustee" /><br />
 <label for="">&nbsp;</label> <input type="text" name="trustee" /><br />
@@ -75,18 +75,18 @@ $(document).ready(function() {
 </div>
 {% endif %}
 <br /><br />
-<label for="">&nbsp;</label>  <input class="button" type="submit" value="create" id="submit" />
+<label for="">&nbsp;</label>  <input class="button" type="submit" value="erstellen" id="submit" />
   </form>
   <br /><br />
 {% if election_type == "one" %}
   <form style="padding-left: 200px;" id="sk_form" onsubmit="return false;">
       <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-      Your Election's Secret Key:<br />
+      Der geheime Schlüssel deiner Wahl:<br />
       <label for="">&nbsp;</label>
       <textarea id="sk_textarea" cols="60" rows="5">
       </textarea><br />
-      (You need to copy and paste this key and keep it safe,<br />
-      otherwise you won't be able to tally your election.)
+      (Du musst diesen Schlüssel kopieren und sicher aufbewahren,<br />
+      sonst kannst du deine Wahl nicht auszählen.)
   </form>
 {% endif %}
 {% endblock %}

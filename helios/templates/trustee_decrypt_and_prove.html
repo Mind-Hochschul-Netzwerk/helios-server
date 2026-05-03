@@ -9,11 +9,11 @@ $(document).ready(function() {
     $('#waiting_submit_div').hide();
     $('#done_div').hide();
     $('#error_div').hide();
-    
+
     BigInt.setup(function() {
         ELECTION_JSON = {{election.toJSON|safe}};
         ELECTION_PK = ElGamal.PublicKey.fromJSONObject(ELECTION_JSON['public_key']);
-        TALLY = HELIOS.Tally.fromJSONObject({{election.encrypted_tally.toJSON|safe}}, ELECTION_PK);   
+        TALLY = HELIOS.Tally.fromJSONObject({{election.encrypted_tally.toJSON|safe}}, ELECTION_PK);
         $('#sk_section').show();
     });
 });
@@ -25,18 +25,18 @@ function decrypt_and_prove_tally(tally, public_key, secret_key) {
     var CURRENT_EXP = 0;
     var CURRENT_RESULT = BigInt.ONE;
     DISCRETE_LOGS[CURRENT_RESULT.toString()] = CURRENT_EXP;
-    
+
     // go through the num_tallied
     while (CURRENT_EXP < tally.num_tallied) {
       CURRENT_EXP += 1;
       CURRENT_RESULT = CURRENT_RESULT.multiply(public_key.g).mod(public_key.p);
-      DISCRETE_LOGS[CURRENT_RESULT.toString()] = CURRENT_EXP;      
+      DISCRETE_LOGS[CURRENT_RESULT.toString()] = CURRENT_EXP;
     }
-    
+
     // initialize the arrays
     var decryption_factors= [];
     var decryption_proofs= [];
-    
+
     // decrypt the tallies
     $(tally.tally).each(function(q_num, q_tally) {
         decryption_factors[q_num] = [];
@@ -44,12 +44,12 @@ function decrypt_and_prove_tally(tally, public_key, secret_key) {
 
         $(q_tally).each(function(choice_num, choice_tally) {
            var one_choice_result = secret_key.decryptionFactorAndProof(choice_tally, ElGamal.fiatshamir_challenge_generator);
-           
+
            decryption_factors[q_num][choice_num] = one_choice_result.decryption_factor
            decryption_proofs[q_num][choice_num] = one_choice_result.decryption_proof;
         });
     });
-    
+
     return {'decryption_factors': decryption_factors, 'decryption_proofs' : decryption_proofs};
 }
 
@@ -60,29 +60,29 @@ function get_secret_key() {
 function do_tally() {
   $('#sk_section').hide();
   $('#waiting_div').show();
-  
+
   var secret_key = get_secret_key();
-  
+
   var factors_and_proof = decrypt_and_prove_tally(TALLY, ELECTION_PK, secret_key);
-  
+
   // json'ify it
   var factors = factors_and_proof.decryption_factors
   var decryption_proofs = $(factors_and_proof.decryption_proofs).map(function(i, q_proof) {
       return $(q_proof).map(function(j, a_proof){
-         return a_proof.toJSONObject(); 
+         return a_proof.toJSONObject();
       });
   });
-  
+
   var factors_and_proofs = {'decryption_factors': factors, 'decryption_proofs': decryption_proofs};
   var factors_and_proofs_json = $.toJSON(factors_and_proofs);
-  
+
   // clear stuff
   secret_key = null;
   $('#sk_textarea').val("");
-  
+
   // display the result in a text area.
   $('#waiting_div').hide();
-  
+
   $('#result_textarea').html(factors_and_proofs_json);
   $('#result_div').show();
   $('#first-step-success').show();
@@ -93,7 +93,7 @@ function submit_result() {
   $('#waiting_submit_div').show();
 
   var result = $('#result_textarea').val();
-  
+
   // do the post
   $.ajax({
       type: 'POST',
@@ -104,7 +104,7 @@ function submit_result() {
         if (result != "FAILURE") {
           $('#done_div').show();
         } else {
-          alert('verification failed, you probably used the wrong key.');
+          alert('Überprüfung fehlgeschlagen, Du hast wahrscheinlich den falschen Schlüssel verwendet.');
           reset();
         }
       },
@@ -131,75 +131,75 @@ function reset() {
 }
 
 </script>
-  <h2 class="title">Trustee {{trustee.name}} &mdash; Decrypt Result for {{election.name}}</h2>
+  <h2 class="title">Treuhänder {{trustee.name}} &mdash; Ergebnis entschlüsseln für {{election.name}}</h2>
 
 <p>
-    <b>Trustee:</b> <tt>{{trustee.email}}</tt><br />
-    <b>Public Key Fingerprint:</b> <tt>{{trustee.public_key_hash}}</tt><br />
-    <b>Encrypted Tally Fingerprint:</b> <tt>{{election.encrypted_tally_hash}}</tt>
+    <b>Treuhänder:</b> <tt>{{trustee.email}}</tt><br />
+    <b>Öffentlicher Schlüssel-Fingerabdruck:</b> <tt>{{trustee.public_key_hash}}</tt><br />
+    <b>Fingerabdruck der verschlüsselten Auszählung:</b> <tt>{{election.encrypted_tally_hash}}</tt>
 </p>
 
     <p>
-      The encrypted tally for your election has been computed.<br />
-      Now it's time to compute and submit your partial decryption.
+      Die verschlüsselte Auszählung für Ihre Wahl wurde berechnet.<br />
+      Jetzt ist es Zeit, Ihre partielle Entschlüsselung zu berechnen und einzureichen.
     </p>
 
     <p>
-      This process is performed in two steps.<br /><br />
-      <u>First</u>, your secret key is used to decrypt the tally <em>inside</em> your browser, without connecting to the network.<br />
-      You can choose to take your browser "offline" for this step, if you'd like.<br /><br />
-      <u>Second</u>, once your decryption factors have been computed, your browser will need to be "online" to submit them to the server.<br />
-      If you'd like, you can compute your decryption factors, copy them to your clipboard, restart your browser, and<br />
-      skip to the second step so that your browser is never online when you enter your secret key.
+      Dieser Prozess wird in zwei Schritten durchgeführt.<br /><br />
+      <u>Zuerst</u> wird dein geheimer Schlüssel verwendet, um die Auszählung <em>in Ihrem Browser</em> zu entschlüsseln, ohne eine Verbindung zum Netzwerk herzustellen.<br />
+      Du kannst deinen Browser für diesen Schritt "offline" schalten, wenn du möchtest.<br /><br />
+      <u>Zweitens</u>, sobald deine Entschlüsselungsfaktoren berechnet wurden, muss dein Browser "online" sein, um ihn an den Server zu übermitteln.<br />
+      Wenn du möchtest, kannst du deine Entschlüsselungsfaktoren berechnen, in die Zwischenablage kopieren, deinen Browser neu starten und<br />
+      zum zweiten Schritt springen, damit dein Browser nie online ist, wenn du deinen geheimen Schlüssel eingibst.
     </p>
-    
+
   <div id="sk_section" style="display:none;">
 
       <form onsubmit="return false;">
-          <h3>FIRST STEP: enter your secret key</h3>
+          <h3>ERSTER SCHRITT: Gib deinen geheimen Schlüssel ein</h3>
           <textarea id="sk_textarea" cols="60" rows="5" style="height: 25em;"></textarea>
       </form>
       <p id="tally_section">
-          <button class="button" onclick="do_tally();">Generate partial decryption</button>
+          <button class="button" onclick="do_tally();">Partielle Entschlüsselung generieren</button>
       </p>
 
       <p id="skip_to_second_step_instructions">
-        <a href="javascript:skip_to_second_step();">skip to the second step</a><br />
-        (you need to have already computed your decryption factors.)
+        <a href="javascript:skip_to_second_step();">zum zweiten Schritt springen</a><br />
+        (Du musst deine Entschlüsselungsfaktoren bereits berechnet haben.)
       </p>
   </div>
-  
+
   <div id="waiting_div">
-      Generating partial decryption factors and proofs...<br />
+      Partielle Entschlüsselungsfaktoren und Beweise werden generiert...<br />
       <img src="/static/helios/loading.gif" />
   </div>
 
   <div id="waiting_submit_div">
-      Submitting and checking your decryption factors and proofs...<br />
+      Deine Entschlüsselungsfaktoren und Beweise werden übermittelt und überprüft...<br />
       <img src="/static/helios/loading.gif" />
   </div>
-  
+
   <div id="result_div">
-      <h3>SECOND STEP: upload your partial decryption</h3>
+      <h3>ZWEITER SCHRITT: Laden deine partielle Entschlüsselung hoch</h3>
       <p id="first-step-success" style="display: none;">
-          Your partial decryption factors and proofs have been generated below.<br />
-          Your secret key has been cleared from memory.<br />
-          When you're ready, you can submit this result to the server.
+          Deine partiellen Entschlüsselungsfaktoren und Beweise wurden unten generiert.<br />
+          Dein geheimer Schlüssel wurde aus dem Speicher gelöscht.<br />
+          Wenn du bereit bist, können Sie dieses Ergebnis an den Server übermitteln.
       </p>
-      Your partial decryption:<br />
+      Deine partielle Entschlüsselung:<br />
       <p>
           <textarea id="result_textarea" cols="60" rows="5" wrap="soft" style="height: 25em;"></textarea>
-          <button class="button" onclick="submit_result();">Upload decryption factors to server</button>
+          <button class="button" onclick="submit_result();">Entschlüsselungsfaktoren auf Server hochladen</button>
       </p>
-      <p><a href="javascript:reset()">reset and restart decryption process</a></p>
+      <p><a href="javascript:reset()">Zurücksetzen und Entschlüsselungsprozess neu starten</a></p>
   </div>
-  
+
   <div id="done_div">
-      Done! <a href="{% url "election@view" election.uuid %}">Back to election</a>
+      Fertig! <a href="{% url "election@view" election.uuid %}">Zurück zur Wahl</a>
   </div>
-  
+
   <div id="error_div">
-      Error: your secret key was likely incorrect.
+      Fehler: Dein geheimer Schlüssel war wahrscheinlich falsch.
   </div>
 
   <div id="applet_div">

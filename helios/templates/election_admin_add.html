@@ -1,13 +1,13 @@
 {% extends TEMPLATE_BASE %}
 
-{% block title %}Add Administrator - {{election.name}}{% endblock %}
+{% block title %}Administrator hinzufügen - {{election.name}}{% endblock %}
 
 {% block content %}
-  <h3 class="title">{{election.name}} &mdash; Add Administrator <span style="font-size:0.7em;">[<a href="{% url "election@admins" election.uuid %}">cancel</a>]</span></h3>
+  <h3 class="title">{{election.name}} &mdash; Administrator hinzufügen <span style="font-size:0.7em;">[<a href="{% url "election@admins" election.uuid %}">abbrechen</a>]</span></h3>
 
 {% if matching_users %}
 <p>
-    Multiple users were found with the email <strong>{{email}}</strong>. Please select which one to add:
+    Mehrere Benutzer wurden mit der E-Mail-Adresse <strong>{{email}}</strong> gefunden. Bitte wählen Sie einen aus:
 </p>
 
 <form method="post" action="">
@@ -24,18 +24,18 @@
 {% endfor %}
 </ul>
 <br />
-<input class="button" type="submit" value="Add Selected Administrator" />
+<input class="button" type="submit" value="Ausgewählten Administrator hinzufügen" />
 </form>
 
 {% else %}
 
 <p>
-    Add another administrator to this election. The new administrator will have the same privileges as you,
-    including the ability to manage voters, questions, trustees, and other settings.
+    Füge einen weiteren Administrator zu dieser Wahl hinzu. Der neue Administrator hat die gleichen Rechte wie du,
+    einschließlich der Möglichkeit, Wahlberechtigte, Fragen, Treuhänder und andere Einstellungen zu verwalten.
 </p>
 
 <p>
-    <em>Note: The user must have logged in to Helios at least once before they can be added as an administrator.</em>
+    <em>Hinweis: Der Benutzer muss sich mindestens einmal bei Helios angemeldet haben, bevor er als Administrator hinzugefügt werden kann.</em>
 </p>
 
 {% if error %}
@@ -46,9 +46,9 @@
 
 <form method="post" action="">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-Email: <input type="text" name="email" size="60" /><br /><br />
+E-Mail: <input type="text" name="email" size="60" /><br /><br />
 
-<input class="button" type="submit" value="Add Administrator" />
+<input class="button" type="submit" value="Administrator hinzufügen" />
 </form>
 
 {% endif %}

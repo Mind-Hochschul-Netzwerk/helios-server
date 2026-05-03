@@ -8,34 +8,34 @@
 
 {% block content %}
   <h2 class="title">{{ title }}</h2>
-  
+
   {% if error %}
   <p style="color: red;">{{ error }}</p>
   {% endif %}
-  
+
   <p>{{ description }}</p>
-  
+
   <form class="prettyform" method="POST" action="">
     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
     <table class="pretty">
       <tr>
-        <td><label for="email">Email Address:</label></td>
+        <td><label for="email">E-Mail-Adresse:</label></td>
         <td><input type="email" id="email" name="email" required style="width: 300px;" /></td>
       </tr>
     </table>
     <div>
       <label for="">&nbsp;</label>
-      <input type="submit" value="{% if action == 'optout' %}Send Opt-Out Confirmation{% else %}Send Opt-In Confirmation{% endif %}" class="button" />
+      <input type="submit" value="{% if action == 'optout' %}Abmeldebestätigung senden{% else %}Anmeldebestätigung senden{% endif %}" class="button" />
     </div>
   </form>
-  
+
   <div style="margin-top: 30px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd;">
-    <p><strong>Next Steps:</strong></p>
-    <p>You will receive a confirmation email with a link to complete your request.</p>
+    <p><strong>Nächste Schritte:</strong></p>
+    <p>Du erhältst eine Bestätigungs-E-Mail mit einem Link, um deine Anfrage abzuschließen.</p>
     {% if action == 'optout' %}
-    <p>Once opted out, you will not receive any emails from Helios until you opt back in.</p>
+    <p>Nach der Abmeldung erhältst du keine E-Mails von Helios mehr, bis du dich wieder anmeldest.</p>
     {% else %}
-    <p>Once opted back in, you will resume receiving emails from Helios voting system.</p>
+    <p>Nach der erneuten Anmeldung erhältst du wieder E-Mails vom Helios Abstimmungssystem.</p>
     {% endif %}
   </div>
 {% endblock %}

@@ -1,41 +1,41 @@
 {% extends TEMPLATE_BASE %}
 
 {% block content %}
-  <h2 class="title">{{election.name}} &mdash; Freeze Ballot</h2>
+  <h2 class="title">{{election.name}} &mdash; Stimmzettel einfrieren</h2>
 <p>
-Once an election is frozen, the questions, options, and trustees can no longer be modified.<br />
+Sobald eine Wahl eingefroren ist, können die Fragen, Optionen und Treuhänder nicht mehr geändert werden.<br />
 </p>
 
 <p>
 {% if election.openreg %}
-Registration for your election is currently <b>open</b>, which means anyone can vote, even after you freeze the ballot.
+Die Registrierung für Ihre Wahl ist derzeit <b>offen</b>, was bedeutet, dass jeder abstimmen kann, auch nachdem du den Stimmzettel einfrierst.
 {% else %}
-Registration for your election is currently <b>closed</b>, which means only the voters you designate will be able to cast a ballot. As the administrator, you will still be able to modify that voter list as the election progresses.
+Die Registrierung für deine Wahl ist derzeit <b>geschlossen</b>, was bedeutet, dass nur die von dir festgelegten Wahlberechtigten einen Stimmzettel abgeben können. Als Administrator kannst du diese Wählerliste während des Wahlverlaufs noch ändern.
 {% endif %}
-</p>    
+</p>
 
 {% if helios.VOTERS_EMAIL %}
 <p>
-You must freeze the ballot before you can contact voters.
+Du musst den Stimmzettel einfrieren, bevor du Wähler kontaktieren kannst.
 </p>
 {% endif %}
 
 {% if issues_p %}
 <p>
-    Before you can freeze the election, you will need to:
+    Bevor du die Wahl einfrieren kannst, musst du:
     <ul>
         {% for issue in issues %}
         <li>{{issue.action}}</li>
         {% endfor %}
     </ul>
-    <a href="{% url "election@view" election.uuid %}">go back to the election</a>
+    <a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
 </p>
 {% else %}
 <form method="post" action="">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-    
-<input class="button" type="submit" value="Freeze the ballot" />
-<button class="button" onclick="document.location='{% url "election@view" election.uuid %}'; return false;">do NOT freeze yet</button>
+
+<input class="button" type="submit" value="Stimmzettel einfrieren" />
+<button class="button" onclick="document.location='{% url "election@view" election.uuid %}'; return false;">NOCH NICHT einfrieren</button>
 </form>
 {% endif %}
 

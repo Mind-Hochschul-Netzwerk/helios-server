@@ -1,83 +1,83 @@
 {% extends TEMPLATE_BASE %}
-{% block title %}User Search{% endblock %}
+{% block title %}Benutzersuche{% endblock %}
 
 {% block content %}
-<h1>User Search</h1>
+<h1>Benutzersuche</h1>
 
 <p>
 <form method="get" action="{% url "stats@user-search" %}">
-<b>Search for user</b>: <input type="text" name="q" value="{{q}}" placeholder="Name or user ID"/>
-<input class="small button" type="submit" value="search" /> <a class="small button" href="?">clear search</a>
+<b>Nach Benutzern suchen</b>: <input type="text" name="q" value="{{q}}" placeholder="Name oder Benutzer-ID"/>
+<input class="small button" type="submit" value="suchen" /> <a class="small button" href="?">Suche löschen</a>
 </form>
 </p>
 
 {% if q %}
   {% if users_with_elections %}
-    <p><b>Found {{users_with_elections|length}} user(s)</b></p>
+    <p><b>{{users_with_elections|length}} Benutzer gefunden</b></p>
 
     {% for item in users_with_elections %}
     <div style="margin-bottom: 2em; padding: 1em; border: 1px solid #ccc;">
       <h2>{{item.user.pretty_name}}</h2>
       <p>
-        <b>User ID:</b> {{item.user.user_id}}<br/>
-        <b>User Type:</b> {{item.user.user_type}}<br/>
-        <b>Site Admin:</b> {% if item.user.admin_p %}Yes{% else %}No{% endif %}
+        <b>Benutzer-ID:</b> {{item.user.user_id}}<br/>
+        <b>Benutzertyp:</b> {{item.user.user_type}}<br/>
+        <b>Seiten-Administrator:</b> {% if item.user.admin_p %}Ja{% else %}Nein{% endif %}
       </p>
 
-      <h3>Elections as Administrator ({{item.elections_as_admin|length}})</h3>
+      <h3>Wahlen als Administrator ({{item.elections_as_admin|length}})</h3>
       {% if item.elections_as_admin %}
         <ul>
         {% for election in item.elections_as_admin %}
           <li>
             <a href="{% url "election@view" election.uuid %}">{{election.name}}</a>
-            ({{election.num_voters}} voters / {{election.num_cast_votes}} cast votes)
-            {% if election.frozen_at %}[frozen]{% endif %}
-            {% if election.archived_at %}[archived]{% endif %}
+            ({{election.num_voters}} Wähler / {{election.num_cast_votes}} abgegebene Stimmen)
+            {% if election.frozen_at %}[eingefroren]{% endif %}
+            {% if election.archived_at %}[archiviert]{% endif %}
           </li>
         {% endfor %}
         </ul>
       {% else %}
-        <p><i>None</i></p>
+        <p><i>Keine</i></p>
       {% endif %}
 
-      <h3>Elections as Voter ({{item.elections_as_voter|length}})</h3>
+      <h3>Wahlen als Wähler ({{item.elections_as_voter|length}})</h3>
       {% if item.elections_as_voter %}
         <ul>
         {% for election in item.elections_as_voter %}
           <li>
             <a href="{% url "election@view" election.uuid %}">{{election.name}}</a>
-            ({{election.num_voters}} voters / {{election.num_cast_votes}} cast votes)
-            {% if election.frozen_at %}[frozen]{% endif %}
-            {% if election.archived_at %}[archived]{% endif %}
+            ({{election.num_voters}} Wähler / {{election.num_cast_votes}} abgegebene Stimmen)
+            {% if election.frozen_at %}[eingefroren]{% endif %}
+            {% if election.archived_at %}[archiviert]{% endif %}
           </li>
         {% endfor %}
         </ul>
       {% else %}
-        <p><i>None</i></p>
+        <p><i>Keine</i></p>
       {% endif %}
 
-      <h3>Elections as Trustee ({{item.elections_as_trustee|length}})</h3>
+      <h3>Wahlen als Treuhänder ({{item.elections_as_trustee|length}})</h3>
       {% if item.elections_as_trustee %}
         <ul>
         {% for election in item.elections_as_trustee %}
           <li>
             <a href="{% url "election@view" election.uuid %}">{{election.name}}</a>
-            ({{election.num_voters}} voters / {{election.num_cast_votes}} cast votes)
-            {% if election.frozen_at %}[frozen]{% endif %}
-            {% if election.archived_at %}[archived]{% endif %}
+            ({{election.num_voters}} Wähler / {{election.num_cast_votes}} abgegebene Stimmen)
+            {% if election.frozen_at %}[eingefroren]{% endif %}
+            {% if election.archived_at %}[archiviert]{% endif %}
           </li>
         {% endfor %}
         </ul>
       {% else %}
-        <p><i>None</i></p>
+        <p><i>Keine</i></p>
       {% endif %}
     </div>
     {% endfor %}
   {% else %}
-    <p><i>No users found matching "{{q}}"</i></p>
+    <p><i>Keine Benutzer gefunden, die "{{q}}" entsprechen</i></p>
   {% endif %}
 {% else %}
-  <p><i>Enter a search term to find users</i></p>
+  <p><i>Geben Sie einen Suchbegriff ein, um Benutzer zu finden</i></p>
 {% endif %}
 
 {% endblock %}

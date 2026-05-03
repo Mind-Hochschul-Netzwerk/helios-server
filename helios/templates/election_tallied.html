@@ -3,18 +3,18 @@
 
 {% block content %}
 
-  <h2 class="title">Election {{election.name}} Already Tallied</h2>
+  <h2 class="title">Wahl {{election.name}} bereits ausgezählt</h2>
 
   <p>
-      This election has already been tallied, you can no longer cast a vote.
+      Diese Wahl wurde bereits ausgezählt, du kannst keine Stimme mehr abgeben.
   </p>
-  
+
   <p>
-      {% if election.voting_start_at %}Voting start at {{election.voting_start_at|utc_time}}<br />{% endif %}
-      {% if election.voting_end_at %}Voting end at {{election.voting_end_at|utc_time}}<br />{% endif %}
+      {% if election.voting_start_at %}Abstimmung beginnt am {{election.voting_start_at|utc_time}}<br />{% endif %}
+      {% if election.voting_end_at %}Abstimmung endet am {{election.voting_end_at|utc_time}}<br />{% endif %}
   </p>
-  
+
   <p>
-      <a href="{% url "election@view" election.uuid %}">view the election tally</a>
+      <a href="{% url "election@view" election.uuid %}">die Wahlauszählung anzeigen</a>
   </p>
 {% endblock %}

@@ -1,29 +1,29 @@
 {% extends TEMPLATE_BASE %}
 {% load timezone_tags %}
 
-{% block title %}Voters &amp; Ballot Tracking Center for {{election.name}}{% endblock %}
+{% block title %}Wähler &amp; Stimmzettel-Verfolgungszentrum für {{election.name}}{% endblock %}
 {% block content %}
-  <h3 class="title">{{election.name}} &mdash; Voters and Ballot Tracking Center <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">back to election</a>]</span></h3>
+  <h3 class="title">{{election.name}} &mdash; Wähler und Stimmzettel-Verfolgungszentrum <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>]</span></h3>
 
 <p>
-<b>Who can vote?</b>
+<b>Wer kann abstimmen?</b>
 {% if election.openreg %}
 {{election.pretty_eligibility|safe}}
 {% else %}
-<em>Only the voters listed here</em>.
+<em>Nur die hier aufgeführten Wähler</em>.
 {% endif %}
 </p>
 
 {% if admin_p and not election.frozen_at %}
 {% if election.private_p %}
-<em>Your election is marked private, which means you cannot open registration up more widely</em>.<br />
+<em>Deine Wahl ist als privat markiert, was bedeutet, dass du die Registrierung nicht weiter öffnen kannst</em>.<br />
 {% else %}
 <form method="post" action="{% url "election@voters@eligibility" election.uuid %}">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-<input type="radio" name="eligibility" value="openreg" {% if election.openreg and not election.eligibility %}CHECKED{% endif %} /> anyone can vote<br />
-<input type="radio" name="eligibility" value="closedreg" {% if not election.openreg %}CHECKED{% endif %} /> only voters listed explicitly below can vote<br />
+<input type="radio" name="eligibility" value="openreg" {% if election.openreg and not election.eligibility %}CHECKED{% endif %} /> jeder kann abstimmen<br />
+<input type="radio" name="eligibility" value="closedreg" {% if not election.openreg %}CHECKED{% endif %} /> nur unten explizit aufgeführte Wahlberechtigte können abstimmen<br />
 {% if categories %}
-<input type="radio" name="eligibility" value="limitedreg" {% if election.eligibility %}CHECKED{% endif %} /> only voters who are members of 
+<input type="radio" name="eligibility" value="limitedreg" {% if election.eligibility %}CHECKED{% endif %} /> only voters who are members of
 <select name="category_id">
 {% for category in categories %}
 <option value="{{category.id}}" {% if eligibility_category_id == category.id %}SELECTED{% endif %}> {{category.name}}</option>
@@ -31,7 +31,7 @@
 </select>
 <br />
 {% endif %}
-<input class="button" type="submit" value="update" />
+<input class="button" type="submit" value="aktualisieren" />
 </form>
 {% endif %}
 {% endif %}
@@ -39,9 +39,9 @@
 {% if email_voters and election.frozen_at and admin_p %}
 <p>
 {% if can_send_emails %}
-<a class="button" href="{% url "election@voters@email" election.uuid %}">email voters</a>
+<a class="button" href="{% url "election@voters@email" election.uuid %}">Wähler per E-Mail benachrichtigen</a>
 {% else %}
-<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{email_disabled_reason}}">email voters (disabled: {{email_disabled_reason}})</button>
+<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{email_disabled_reason}}">Wähler per E-Mail benachrichtigen (deaktiviert: {{email_disabled_reason}})</button>
 {% endif %}
 </p>
 {% endif %}
@@ -49,15 +49,15 @@
 {% if election.num_voters > 20 %}
 <p>
 {% if q %}
-<p><em>searching for <u>{{q}}</u>.</em> [<a href="?">clear search</a>]</p>
+<p><em>Suche nach <u>{{q}}</u>.</em> [<a href="?">Suche löschen</a>]</p>
 {% else %}
-<form method="get" action="{% url "election@voters@list-pretty" election.uuid %}"><b>search</b>: <input type="text" name="q" /> <input type="submit" value="search" /></form>
+<form method="get" action="{% url "election@voters@list-pretty" election.uuid %}"><b>Suche</b>: <input type="text" name="q" /> <input type="submit" value="suchen" /></form>
 {% endif %}
 </p>
 {% endif %}
 
 <p>
-<a class="button" href="{% url "election@voters@download-csv" election.uuid %}{% if q %}?q={{q|urlencode}}{% endif %}">Download Voters as CSV</a>
+<a class="button" href="{% url "election@voters@download-csv" election.uuid %}{% if q %}?q={{q|urlencode}}{% endif %}">Wähler als CSV herunterladen</a>
 </p>
 
 {% if admin_p %}
@@ -65,14 +65,14 @@
 {% if upload_p and not election.openreg %}
 <p>
 {% if can_modify_voters %}
-<a class="button" href="{% url "election@voters@upload" election_uuid=election.uuid %}">bulk upload voters</a>
+<a class="button" href="{% url "election@voters@upload" election_uuid=election.uuid %}">Wähler massenhaft hochladen</a>
 {% else %}
-<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{modify_voters_disabled_reason}}">bulk upload voters (disabled: {{modify_voters_disabled_reason}})</button>
+<button class="button" disabled style="opacity: 0.5; cursor: not-allowed;" title="{{modify_voters_disabled_reason}}">Wähler massenhaft hochladen (deaktiviert: {{modify_voters_disabled_reason}})</button>
 {% endif %}
 </p>
 
 {% if voter_files %}
-Prior Bulk Uploads:
+Vorherige Massen-Uploads:
 <ul>
 {% for vf in voter_files %}
 <li>
@@ -101,9 +101,9 @@ Prior Bulk Uploads:
 
 {% if admin_p and not election.frozen_at and election.num_voters > 0 %}
 <p>
-<form style="display: inline;" method="post" action="{% url "election@voters@clear" election.uuid %}" onsubmit="return confirm('Are you sure you want to remove ALL {{election.num_voters}} voter(s)? This action cannot be undone.');">
+<form style="display: inline;" method="post" action="{% url "election@voters@clear" election.uuid %}" onsubmit="return confirm('Bist du sicher, dass du ALLE {{election.num_voters}} Wähler entfernen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.');">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
-<input class="button alert" type="submit" value="clear all voters" />
+<input class="button alert" type="submit" value="alle Wähler löschen" />
 </form>
 </p>
 {% endif %}
@@ -115,31 +115,31 @@ Prior Bulk Uploads:
 <p>
 <b>
 {% if election.num_cast_votes %}
-{{election.num_cast_votes}} cast vote{% if election.num_cast_votes == 1 %}{% else %}s{% endif %}
+{{election.num_cast_votes}} abgegebene Stimme{% if election.num_cast_votes == 1 %}{% else %}n{% endif %}
 {% else %}
-no votes yet
+noch keine Stimmen
 {% endif %}
 </b>
 </p>
 
 {% if voters_page.has_previous %}
-<a href="{% url "election@voters@list-pretty" election.uuid %}?page={{voters_page.previous_page_number}}&limit={{limit}}&q={{q|urlencode}}">previous {{limit}}</a> &nbsp;&nbsp;
+<a href="{% url "election@voters@list-pretty" election.uuid %}?page={{voters_page.previous_page_number}}&limit={{limit}}&q={{q|urlencode}}">vorherige {{limit}}</a> &nbsp;&nbsp;
 {% endif %}
 
 
-Voters {{voters_page.start_index}} - {{voters_page.end_index}} (of {{total_voters}})&nbsp;&nbsp;
+Wähler {{voters_page.start_index}} - {{voters_page.end_index}} (von {{total_voters}})&nbsp;&nbsp;
 
 {% if voters_page.has_next %}
-<a href="{% url "election@voters@list-pretty" election.uuid %}?page={{voters_page.next_page_number}}&limit={{limit}}&q={{q|urlencode}}">next {{limit}}</a> &nbsp;&nbsp;
+<a href="{% url "election@voters@list-pretty" election.uuid %}?page={{voters_page.next_page_number}}&limit={{limit}}&q={{q|urlencode}}">nächste {{limit}}</a> &nbsp;&nbsp;
 {% endif %}
 
 <table class="pretty">
 <tr>
 {% if admin_p or not election.use_voter_aliases %}
 {% if admin_p %}
-<th style="width: 80px;">Actions</th>
-<th>Login</th>
-<th>Email Address</th>
+<th style="width: 80px;">Aktionen</th>
+<th>Anmeldename</th>
+<th>E-Mail-Adresse</th>
 {% endif %}
 <th>Name</th>
 {% endif %}
@@ -147,7 +147,7 @@ Voters {{voters_page.start_index}} - {{voters_page.end_index}} (of {{total_voter
 {% if election.use_voter_aliases %}
 <th>Alias</th>
 {% endif %}
-<th>Smart Ballot Tracker</th>
+<th>Intelligenter Stimmzettel-Tracker</th>
 </tr>
 {% for voter in voters %}
 <tr>
@@ -156,12 +156,12 @@ Voters {{voters_page.start_index}} - {{voters_page.end_index}} (of {{total_voter
 <td style="white-space: nowrap;">
 {% if election.frozen_at %}
 {% if can_send_emails %}
-[<a href="{% url "election@voters@email" election.uuid %}?voter_id={{voter.voter_login_id}}">email</a>]
+[<a href="{% url "election@voters@email" election.uuid %}?voter_id={{voter.voter_login_id}}">E-Mail</a>]
 {% else %}
-[<span style="opacity: 0.5; cursor: not-allowed;" title="{{email_disabled_reason}}">email</span>]
+[<span style="opacity: 0.5; cursor: not-allowed;" title="{{email_disabled_reason}}">E-Mail</span>]
 {% endif %}
 {% endif %}
-{% if can_modify_voters %}[<a onclick="return confirm('are you sure you want to remove {{voter.name}} ?');" href="{% url "election@voter@delete" election.uuid voter.uuid %}">x</a>]{% endif %}
+{% if can_modify_voters %}[<a onclick="return confirm('Bist du sicher, dass du {{voter.name}} entfernen möchtest?');" href="{% url "election@voter@delete" election.uuid voter.uuid %}">x</a>]{% endif %}
 </td>
 <td>{{voter.voter_login_id}}</td>
 <td>{{voter.voter_email}}</td>
@@ -178,7 +178,7 @@ Voters {{voters_page.start_index}} - {{voters_page.end_index}} (of {{total_voter
 
 {% else %}
 <br /><br />
-<em>no voters.</em>
+<em>keine Wähler.</em>
 {% endif %}
 
 {% endblock %}

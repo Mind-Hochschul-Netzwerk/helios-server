@@ -3,18 +3,18 @@
 
 {% block content %}
 
-  <h2 class="title">Election {{election.name}} Not Yet Open</h2>
+  <h2 class="title">Wahl {{election.name}} noch nicht eröffnet</h2>
 
   <p>
-      This election is not yet open.
+      Diese Wahl ist noch nicht eröffnet.
   </p>
   
   <p>
-      {% if election.voting_start_at %}Voting start at {{election.voting_start_at|utc_time}}<br />{% endif %}
-      {% if election.voting_end_at %}Voting end at {{election.voting_end_at|utc_time}}<br />{% endif %}
+      {% if election.voting_start_at %}Abstimmung beginnt am {{election.voting_start_at|utc_time}}<br />{% endif %}
+      {% if election.voting_end_at %}Abstimmung endet am {{election.voting_end_at|utc_time}}<br />{% endif %}
   </p>
   
   <p>
-      <a href="{% url "election@view" election.uuid %}">back to the election</a>
+      <a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
   </p>
 {% endblock %}

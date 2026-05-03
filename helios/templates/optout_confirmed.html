@@ -8,34 +8,34 @@
 
 {% block content %}
   <h2 class="title">{{ title }}</h2>
-  
+
   <div style="text-align: center; margin: 20px 0;">
     <span class="highlight-box round" style="background-color: #f0f8f0; border: 1px solid #4caf50; padding: 15px; display: inline-block;">
       {{ message }}
     </span>
   </div>
-  
+
   {% if action == 'optout' %}
   <div style="margin-top: 30px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd;">
-    <p><strong>What this means:</strong></p>
+    <p><strong>Was das bedeutet:</strong></p>
     <ul>
-      <li>You will not receive any emails from Helios voting system</li>
-      <li>You cannot be added to new elections until you opt back in</li>
-      <li>You can opt back in at any time by visiting <a href="{% url 'optin_form' %}">the opt-in page</a></li>
+      <li>Du wirst keine E-Mails vom Helios Abstimmungssystem erhalten</li>
+      <li>Du kannst nicht zu neuen Wahlen hinzugefügt werden, bis du dich wieder anmeldest</li>
+      <li>Du kannst sich jederzeit wieder anmelden, indem du die <a href="{% url 'optin_form' %}">Anmeldeseite</a> besuchst</li>
     </ul>
   </div>
   {% else %}
   <div style="margin-top: 30px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd;">
-    <p><strong>What this means:</strong></p>
+    <p><strong>Was das bedeutet:</strong></p>
     <ul>
-      <li>You will now receive emails from Helios voting system</li>
-      <li>You can be added to elections and receive voting notifications</li>
-      <li>You can opt out again at any time using the unsubscribe link in any email</li>
+      <li>Du erhältst jetzt E-Mails vom Helios Abstimmungssystem</li>
+      <li>Du kannst zu Wahlen hinzugefügt werden und Abstimmungsbenachrichtigungen erhalten</li>
+      <li>Du kannst sich jederzeit wieder abmelden, indem du den Abmeldelink in jeder E-Mail verwendest</li>
     </ul>
   </div>
   {% endif %}
-  
+
   <div style="margin-top: 30px; text-align: center;">
-    <a href="/">← Return to Helios</a>
+    <a href="/">← Zurück zu Helios</a>
   </div>
 {% endblock %}

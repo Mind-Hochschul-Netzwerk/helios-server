@@ -1,17 +1,17 @@
 {% extends TEMPLATE_BASE %}
-{% block title %}Statistics{% endblock %}
+{% block title %}Statistiken{% endblock %}
 
 {% block content %}
 <h1>Admin</h1>
 
 <ul>
-<li> <a href="{% url "stats@elections" %}">elections</a></li>
-<li> <a href="{% url "stats@deleted-elections" %}">deleted elections</a></li>
-<li> <a href="{% url "stats@user-search" %}">user search</a></li>
-<li> <a href="{% url "stats@recent-votes" %}">recent votes</a></li>
-<li> <a href="{% url "stats@elections-problems" %}">recent problem elections</a></li>
+<li> <a href="{% url "stats@elections" %}">Wahlen</a></li>
+<li> <a href="{% url "stats@deleted-elections" %}">gelöschte Wahlen</a></li>
+<li> <a href="{% url "stats@user-search" %}">Benutzersuche</a></li>
+<li> <a href="{% url "stats@recent-votes" %}">aktuelle Stimmen</a></li>
+<li> <a href="{% url "stats@elections-problems" %}">aktuelle Problemwahlen</a></li>
 </ul>
 
-<p><b>{{num_votes_in_queue}}</b> votes in queue. {% if num_votes_in_queue %}[<a href="{% url "stats@force-queue" %}">force it</a>]{% endif %}</p>
+<p><b>{{num_votes_in_queue}}</b> Stimmen in der Warteschlange. {% if num_votes_in_queue %}[<a href="{% url "stats@force-queue" %}">erzwingen</a>]{% endif %}</p>
 
 {% endblock %}

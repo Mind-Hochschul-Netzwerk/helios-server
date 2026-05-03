@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>{% block title %}{% endblock %}</title>
-  
+
   <link rel="stylesheet" href="/static/foundation/css/foundation.css">
   <link rel="stylesheet" href="/static/foundation-tweaks.css">
   <link rel="stylesheet" href="/static/main.css">
   <link rel="stylesheet" href="/static/helios/timezone-display.css">
 
-{% if settings.DEBUG %}  
+{% if settings.DEBUG %}
   <script src="/static/foundation/js/vendor/custom.modernizr.js"></script>
   <script language="javascript" src="/static/helios/js/jquery-1.4.2.min.js"></script>
   <script language="javascript" src="/static/helios/js/jquery-ui-1.8.1.custom.min.js"></script>
@@ -42,7 +39,7 @@
       <li class="toggle-topbar menu-icon"><a href="#" onclick="$('nav').toggleClass('expanded'); return false;"><span>Menu</span></a>
       </li>
     </ul>
- 
+
     <section class="top-bar-section">
       <!-- Right Nav Section -->
       <ul class="right">
@@ -51,26 +48,14 @@
 	<li class="divider"></li>
 	{% endif %}
 	{% if not settings.MASTER_HELIOS %}
-	<li><a href="http://heliosvoting.org">About Helios</a></li>
+	<li><a href="http://heliosvoting.org">Über Helios</a></li>
 	{% endif %}
       </ul>
-      
+
       <ul>
         <li><a href="/">{{settings.SITE_TITLE}}</a></li>
-	{% if settings.MASTER_HELIOS %}
         <li class="divider"></li>
-        <li class="active"><a href="/about">About</a></li>
-        <li class="divider"></li>
-        <li><a target="_new" href="https://github.com/benadida/helios-server">Code</a></li>
-        <li class="divider"></li>
-        <li><a href="/docs">Docs</a></li>
-        <li class="divider"></li>
-        <li><a href="/faq">FAQ</a></li>
-        <li class="divider"></li>
-        <li><a href="/privacy">Privacy</a></li>
-	{% endif %}
-        <li class="divider"></li>
-        <li><a href="mailto:{{settings.HELP_EMAIL_ADDRESS}}">Help!</a></li>
+        <li><a href="mailto:{{settings.HELP_EMAIL_ADDRESS}}">Hilfe!</a></li>
       </ul>
     </section>
   </nav>
@@ -81,7 +66,7 @@
   <div class="row" id="contentbody">
       {% block content %}{% endblock %}
   </div>
-  
+
   <div class="push"></div>
   </div>
 
@@ -92,25 +77,25 @@
       {% endif %}
     </span>-->
     {% if user %}
-    logged in as <b>{{user.display_html_small|safe}}</b>&nbsp;&nbsp;
-    <a class="tiny button" href="{% url "auth@logout" %}?return_url={{CURRENT_URL}}">logout</a><br />
+    angemeldet als <b>{{user.display_html_small|safe}}</b>&nbsp;&nbsp;
+    <a class="tiny button" href="{% url "auth@logout" %}?return_url={{CURRENT_URL}}">Abmelden</a><br />
     {% else %}
     {% if voter %}
-    You are signed in as voter <u>{% if voter.alias %}{{voter.alias}}{% else %}{{voter.name}}{% endif %}</u> in election <u>{{voter.election.name}}</u>. [<a href="{{settings.SECURE_URL_HOST}}{% url "auth@logout" %}?return_url={{CURRENT_URL}}">sign out</a>]
+    Du bist angemeldet als Wähler <u>{% if voter.alias %}{{voter.alias}}{% else %}{{voter.name}}{% endif %}</u> in der Wahl <u>{{voter.election.name}}</u>. [<a href="{{settings.SECURE_URL_HOST}}{% url "auth@logout" %}?return_url={{CURRENT_URL}}">Abmelden</a>]
     {% else %}
 {% if settings.SHOW_LOGIN_OPTIONS %}
-    not logged in. <a class="tiny button" href="{{settings.SECURE_URL_HOST}}{% url "auth@index" %}?return_url={{CURRENT_URL}}">log in</a>
+    nicht angemeldet. <a class="tiny button" href="{{settings.SECURE_URL_HOST}}{% url "auth@index" %}?return_url={{CURRENT_URL}}">Anmelden</a>
 {% else %}
-powered by <a href="http://heliosvoting.org">Helios Voting</a>.
+unterstützt von <a href="http://heliosvoting.org">Helios Voting</a>.
 {% endif %}
     {% endif %}
     {% endif %}
       <br clear="right" />
     </div>
-  
+
   </div>
       <script>
 	$(document).foundation();
-      </script>     
+      </script>
 </body>
 </html>

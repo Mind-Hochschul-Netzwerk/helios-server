@@ -2,7 +2,7 @@
 
 {% block title %}Questions for {{election.name}}{% endblock %}
 {% block content %}
-  <h3 class="title">{{election.name}} &mdash; Questions <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">back to election</a>]</span></h3>
+  <h3 class="title">{{election.name}} &mdash; Fragen <span style="font-size:0.7em;">[<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>]</span></h3>
 
   <script language="javascript">
 {% if election.questions %}
@@ -31,17 +31,17 @@
   function createAnswerRowHTML(answer_num, answer_text, answer_url) {
     answer_text = answer_text || '';
     answer_url = answer_url || '';
-    
+
     var required_attr = answer_num === 1 ? 'required' : '';
-    var placeholder = answer_num === 1 ? 'Enter answer option' : 'Enter answer option (optional)';
+    var placeholder = answer_num === 1 ? 'Antwortoption eingeben' : 'Antwortoption eingeben (optional)';
     var escaped_answer = escapeAttr(answer_text);
     var escaped_url = escapeAttr(answer_url);
     var has_url = answer_url.length > 0;
     var url_display = has_url ? 'flex' : 'none';
-    var toggle_text = has_url ? '- Hide link' : '+ Add link';
-    
+    var toggle_text = has_url ? '- Link ausblenden' : '+ Link hinzufügen';
+
     return '<div class="answer-row">' +
-      '<div class="answer-number">Answer #' + answer_num + 
+      '<div class="answer-number">Antwort #' + answer_num +
         '<span class="url-toggle" onclick="toggle_url(this, ' + answer_num + ')">' +
           '<span>' + toggle_text + '</span>' +
         '</span>' +
@@ -56,66 +56,66 @@
   }
 
   function refresh() {
-      $('#questions').processTemplate({'questions' : QUESTIONS, 'admin_p' : ADMIN_P}); 
+      $('#questions').processTemplate({'questions' : QUESTIONS, 'admin_p' : ADMIN_P});
 
       add_answers($('#answer_table'),DEFAULT_NUM_ANSWERS);
  }
-  
+
   function save_questions(callback) {
       $.post('./save_questions', {'questions_json' : $.toJSON(QUESTIONS), 'csrf_token': CSRF_TOKEN}, function(result) {
           if (result == "FAILURE") {
-            alert("The questions could not be saved. Please check that the URLs you entered are either http:// or https://");
+            alert('Die Fragen konnten nicht gespeichert werden. Bitte überprüfe, ob die eingegebenen URLs http:// oder https:// sind');
           } else {
             callback();
           }
-      });      
+      });
   }
-  
+
   function get_question_from_form(form) {
       var max = null;
       if (form.max.value != "")
         max = parseInt(form.max.value);
-        
+
       var new_q = {'question' : form.question.value, 'min': parseInt(form.min.value), 'max': max, 'short_name': form.question.value, 'answers': [], 'answer_urls': [], 'choice_type': form.choice_type.value, 'tally_type': 'homomorphic', 'result_type': form.result_type.value, 'randomize_answer_order': form.randomize_answer_order.value == "1"};
-      
+
       // Process answers in a single pass
       var all_answers = [];
       var all_urls = [];
       var last_valid_index = -1;
       var i = 1;
-      
+
       // Collect all answers and find the last valid one
       while(form['answer_' + i]) {
           var answer_text = form['answer_' + i].value.trim();
           var answer_url = form['answer_url_' + i] ? form['answer_url_' + i].value.trim() : '';
           all_answers.push(answer_text);
           all_urls.push(answer_url);
-          
+
           if (answer_text !== '') {
               last_valid_index = i - 1; // Convert to 0-based index
           }
           i++;
       }
-      
+
       // Check for gaps in answers (empty answers before the last valid one)
       for (var k = 0; k <= last_valid_index; k++) {
           if (all_answers[k] === '') {
-              alert('Please fill in all answer fields up to answer #' + (last_valid_index + 1) + '. You cannot skip answer #' + (k + 1) + '.');
+              alert('Bitte fülle alle Antwortfelder bis Antwort #' + (last_valid_index + 1) + ' aus. Du kannst Antwort #' + (k + 1) + ' nicht überspringen.');
               return null;
           }
       }
-      
+
       // Build the final arrays with only the valid answers
       if (last_valid_index >= 0) {
           new_q.answers = all_answers.slice(0, last_valid_index + 1);
           new_q.answer_urls = all_urls.slice(0, last_valid_index + 1);
       }
-      
+
       if (new_q.answers.length == 0) {
-        alert('Please enter at least one answer option.');
+        alert('Bitte gib mindestens eine Antwortoption ein.');
         return null;
       }
-      
+
       return new_q;
   }
 
@@ -126,7 +126,7 @@
         save_questions(refresh);
       }
   }
-  
+
   function question_remove(q_num) {
       var new_questions = [];
       $(QUESTIONS).each(function(i, q) {
@@ -154,7 +154,7 @@
     // add the answers
     var answer_table = $('#answer_table_' + q_num);
     answer_table.empty(); // Clear existing answers
-    
+
     // Create answer inputs using the unified function
     $(q_data.answers).each(function(i, a) {
       var num = i + 1;
@@ -187,10 +187,10 @@
     var wrapper = $('#url_wrapper_' + num);
     if (wrapper.is(':visible')) {
       wrapper.hide();
-      $(element).find('span').text('+ Add link');
+      $(element).find('span').text('+ Link hinzufügen');
     } else {
       wrapper.show();
-      $(element).find('span').text('- Hide link');
+      $(element).find('span').text('- Link ausblenden');
     }
   }
 
@@ -212,12 +212,12 @@
 
       refresh();
   });
-  
+
 
   </script>
 
   <div id="questions">
   </div>
-					
+
 			<!-- end #content -->
 {% endblock %}

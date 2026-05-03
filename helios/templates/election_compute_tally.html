@@ -3,40 +3,40 @@
 {% block title %}Compute Encryted Tally for {{election.name}}{% endblock %}
 
 {% block content %}
-  <h2 class="title">Compute Tally for Election: {{election.name}}</h2>
+  <h2 class="title">Auswertung für Wahl berechnen: {{election.name}}</h2>
 
 <div id="instructions">
 {% if num_pending_votes > 0 %}
 <p>
-    <b>{{ num_pending_votes }} vote{{ num_pending_votes|pluralize }} still being processed.</b>
+    <b>{{ num_pending_votes }} Stimmen werden noch verarbeitet.</b>
 </p>
 <p>
-    All votes must be verified before computing the tally. Please wait and try again shortly.
-    If this persists, contact <a href="mailto:{{settings.HELP_EMAIL_ADDRESS}}">{{settings.HELP_EMAIL_ADDRESS}}</a>.
+Alle Stimmen müssen verifiziert werden, bevor die Auszählung berechnet wird. Bitte warte und versuche es in Kürze erneut.
+Wenn dies andauert, kontaktiere <a href="mailto:{{settings.HELP_EMAIL_ADDRESS}}">{{settings.HELP_EMAIL_ADDRESS}}</a>.
 </p>
 <p>
-    <a href="{% url "election@compute-tally" election.uuid %}">Refresh this page</a> |
-    <a href="{% url "election@view" election.uuid %}">back to election</a>
+    <a href="{% url "election@compute-tally" election.uuid %}">Seite aktualisieren</a> |
+    <a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
 </p>
 {% elif election.num_cast_votes %}
 <p>
-    You are about to compute the encrypted tally for election <b>{{election.name}}</b>.
+    Du bist dabei, die verschlüsselte Auszählung für die Wahl <b>{{election.name}}</b> zu berechnen.
 </p>
 
 <p>
-    Once you do this, voters will no longer be able to cast a ballot.
+    Sobald du dies tust, können Wahlberechtigte keinen Stimmzettel mehr abgeben.
 </p>
 
 <form method="post" action="" onsubmit="alert('ok, tally has begun')" class="pretty">
 <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
 
-<input class="button" type="submit" value="compute encrypted tally!" />
-<button class="button" onclick="document.location='{% url "election@view" election.uuid %}'; return false;">never mind</button>
+<input class="button" type="submit" value="verschlüsselte Auszählung berechnen!" />
+<button class="button" onclick="document.location='{% url "election@view" election.uuid %}'; return false;">doch nicht</button>
 </form>
 {% else %}
 <p>
-No votes have been cast in this election. At least one vote must be cast before you compute the tally.<br /><br />
-<a href="{% url "election@view" election.uuid %}">back to election</a>
+Bei dieser Wahl wurden keine Stimmen abgegeben. Mindestens eine Stimme muss abgegeben werden, bevor du die Auszählung berechnen kannst.<br /><br />
+<a href="{% url "election@view" election.uuid %}">zurück zur Wahl</a>
 </p>
 {% endif %}
 </div>
