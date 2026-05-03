@@ -1,14 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
 <head>
-  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8" /> 
-  <title>Helios Voting System -- Verifier</title>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8" />
+  <title>Helios Wahlsystem -- Überprüfer</title>
   <link rel="stylesheet" type="text/css" href="css/booth.css" />
   <link rel="stylesheet" type="text/css" href="css/forms.css" />
   <script language="javascript" src="js/jscrypto/jsbn.js"></script>
   <script language="javascript" src="js/jscrypto/jsbn2.js"></script>
   <script language="javascript" src="js/jscrypto/sjcl.js"></script>
-  <script language="javascript" src="js/underscore-min.js"></script> 
+  <script language="javascript" src="js/underscore-min.js"></script>
   <script language="javascript" src="js/jquery-1.2.2.min.js"></script>
   <script language="javascript" src="js/jquery-jtemplates.js"></script>
   <script language="javascript" src="js/jquery.query-2.1.5.js"></script>
@@ -19,7 +19,7 @@
     var JSCRYPTO_HOME = document.location.pathname.replace("verify.html", "js/jscrypto");
   </script>
 
-  <script language="javascript" src="js/jscrypto/class.js"></script>  
+  <script language="javascript" src="js/jscrypto/class.js"></script>
   <script language="javascript" src="js/jscrypto/bigint.js"></script>
   <script language="javascript" src="js/jscrypto/random.js"></script>
   <script language="javascript" src="js/jscrypto/elgamal.js"></script>
@@ -33,15 +33,15 @@ $(document).ready(function() {
        $('#verifier_loading').hide();
        $('#verifier').show();
     }, function() {
-       alert('sorry, in-browser verification requires Java Support at this time.');
+       alert('Entschuldigung, die Verifikation im Browser erfordert derzeit Java-Unterstützung.');
     });
-});    
+});
 
 function result_append(str) {
     $('#results').append(str).append("<br />");
 }
 
-function pretty_result(result) {return result? "VERIFIED" : "FAIL";}
+function pretty_result(result) {return result? "VERIFIZIERT" : "FEHLER";}
 
 function load_ballots(election_url, ballot_list, ballots, final_callback) {
     // the ballots array is the place where we build up the list of ballots
@@ -51,17 +51,17 @@ function load_ballots(election_url, ballot_list, ballots, final_callback) {
         final_callback(ballots);
         return;
     }
-    
-    result_append("loading ballot for voter #" + (ballots.length + 1));
-        
-    // get the next ballot
+
+    result_append("lade Stimmzettel für Wähler #" + (ballots.length + 1));
+
+    // den nächsten Stimmzettel holen
     $.get(election_url + "/ballots/" + ballot_list[ballots.length].uuid + '/last', function(result) {
         var new_ballot = jQuery.secureEvalJSON(result);
         ballots.push(new_ballot);
         if (new_ballot.vote == null)
-          result_append("no ballot for this voter #" + ballots.length);
+          result_append("kein Stimmzettel für Wähler #" + ballots.length);
         else
-          result_append("FOUND a ballot for voter #" + ballots.length);
+          result_append("Stimmzettel für Wähler #" + ballots.length + " gefunden");
         load_ballots(election_url, ballot_list, ballots, final_callback);
     });
 }
@@ -71,42 +71,42 @@ function load_ballot_list(election_url, ballot_list, after, final_callback) {
     var url = election_url + "/voters/?limit=50";
     if (after)
         url+= "&after=" + after;
-        
+
     $.get(url, function(result) {
         var new_ballot_list = jQuery.secureEvalJSON(result);
 
         // done, no more ballots?
         if (new_ballot_list.length == 0)
             return final_callback(ballot_list);
-            
+
         // not done, add to the list
         ballot_list = ballot_list.concat(new_ballot_list);
         after = ballot_list[ballot_list.length - 1].uuid;
-        
+
         // and iterate
         load_ballot_list(election_url, ballot_list, after, final_callback);
     });
 }
 
 function load_election_and_ballots(election_url) {
-        
-    result_append("<h3>Election</h3>");
-    result_append("loading election...");
+
+    result_append("<h3>Wahl</h3>");
+    result_append("lade Wahl...");
 
     var overall_result = true;
-    
+
     // the hash will be computed within the setup function call now
     $.get(election_url, function(raw_json) {
         try {
             election = HELIOS.Election.fromJSONString(raw_json);
-            result_append("loaded election: " + election.name);
-            result_append("election fingerprint: " + election.get_hash());
+            result_append("geladene Wahl: " + election.name);
+            result_append("Wahl-Fingerabdruck: " + election.get_hash());
 
             var tally = [];
 
             $(election.questions).each(function(qnum, q) {
                 if (q.tally_type != "homomorphic") {
-                  result_append("PROBLEM: this election is not a straight-forward homomorphic-tally election. As a result, Helios cannot currently verify it.");
+                  result_append("PROBLEM: Diese Wahl ist keine einfache homomorphe Auszählung. Daher kann Helios sie derzeit nicht verifizieren.");
                   return;
                 }
 
@@ -115,26 +115,26 @@ function load_election_and_ballots(election_url) {
                 });
             });
 
-            result_append("loading list of voters...");
-            
-            // load voter list
+            result_append("lade Liste der Wähler...");
+
+            // Wählerliste laden
             load_ballot_list(election_url, [], null, function(ballot_list) {
-                result_append("loaded voter list, now loading ballots for each..");
+                result_append("Wählerliste geladen, lade jetzt für jeden Stimmzettel...");
 
                 // load all ballots
                 load_ballots(election_url, ballot_list, [], function(ballots) {
                     result_append("");
-                    result_append("<h3>Ballots</h3>");
-                    // now load each ballot
+                    result_append("<h3>Stimmzettel</h3>");
+                    // jetzt jeden Stimmzettel laden
                     $(ballots).each(function(i, cast_vote){
 
                         if (cast_vote.vote == null)
                           return;
 
                         var vote = HELIOS.EncryptedVote.fromJSONObject(cast_vote.vote, election);
-                        result_append("Voter #" + (i+1));
+                        result_append("Wähler #" + (i+1));
                         result_append("-- UUID: " + cast_vote.voter_uuid);
-                        result_append("-- Ballot Tracking Number: " + vote.get_hash());
+                        result_append("-- Stimmzettel-Nummer: " + vote.get_hash());
 
                         vote.verifyProofs(election.public_key, function(answer_num, choice_num, result, choice) {
                             overall_result = overall_result && result;
@@ -168,9 +168,9 @@ function load_election_and_ballots(election_url) {
                            result_append("<h3>Trustees</h3>");
                            // verify the keys
                            $(trustees).each(function(i, trustee) {
-                              result_append("Trustee #" + (i+1) + ": " + trustee.email);
+result_append("Beauftragter #" + (i+1) + ": " + trustee.email);
                               if (trustee.public_key.verifyKnowledgeOfSecretKey(trustee.pok, ElGamal.fiatshamir_dlog_challenge_generator)) {
-                                  result_append("-- PK " + trustee.public_key_hash + " -- VERIFIED.");
+                                  result_append("-- PK " + trustee.public_key_hash + " -- VERIFIZIERT.");
 
                                   // FIXME check the public key hash
                               } else {
@@ -185,13 +185,13 @@ function load_election_and_ballots(election_url) {
 
                            // verify the combination of the keys into the final public key
                            if (combined_key.equals(election.public_key)) {
-                               result_append("election public key CORRECTLY FORMED");
+                               result_append("öffentlicher Wahl-Schlüssel korrekt gebildet");
                            } else {
-                               result_append("==== ERROR, election public key doesn't match");
+                               result_append("==== FEHLER: öffentlicher Wahl-Schlüssel stimmt nicht überein");
                                overall_result = false;
                            }
 
-                           result_append("<h3>Tally</h3>");
+                           result_append("<h3>Auszählung</h3>");
 
                            $(tally).each(function(q_num, q) {
                                result_append("Question #" + (q_num+1) + ": " + election.questions[q_num].short_name);
@@ -199,7 +199,7 @@ function load_election_and_ballots(election_url) {
                                    var plaintext = new ElGamal.Plaintext(election.public_key.g.modPow(BigInt.fromInt(results[q_num][a_num]), election.public_key.p), election.public_key);
 
                                    var check = true;
-                                   result_append("Answer #" + (a_num + 1) + ": " + election.questions[q_num].answers[a_num] + " - COUNT = " + results[q_num][a_num]);
+                                   result_append("Antwort #" + (a_num + 1) + ": " + election.questions[q_num].answers[a_num] + " - ANZAHL = " + results[q_num][a_num]);
 
                                    var decryption_factors = [];
 
@@ -207,9 +207,9 @@ function load_election_and_ballots(election_url) {
                                    $(trustees).each(function(t_num, trustee) {
                                        if (trustee.public_key.verifyDecryptionFactor(a, trustee.decryption_factors[q_num][a_num],
                                                        trustee.decryption_proofs[q_num][a_num], ElGamal.fiatshamir_challenge_generator)) {
-                                           result_append("-- Trustee " + trustee.email + ": decryption factor verifies");
+                                           result_append("-- Beauftragter " + trustee.email + ": Entschlüsselungsfaktor stimmt");
                                        } else {
-                                           result_append("==== ERROR with Trustee " + trustee.email + ": decryption factor does not verify");
+                                           result_append("==== FEHLER bei Beauftragtem " + trustee.email + ": Entschlüsselungsfaktor stimmt nicht");
                                            check= false;
                                            overall_result = false;
                                        }
@@ -218,7 +218,7 @@ function load_election_and_ballots(election_url) {
                                    });
 
                                    // recheck decryption factors
-                                   var expected_value = election.public_key.g.modPow(BigInt.fromInt(results[q_num][a_num]), election.public_key.p);                        
+                                   var expected_value = election.public_key.g.modPow(BigInt.fromInt(results[q_num][a_num]), election.public_key.p);
                                    var recomputed_value = a.decrypt(decryption_factors).getM();
                                    if (expected_value.equals(recomputed_value)) {
                                    } else {
@@ -231,12 +231,12 @@ function load_election_and_ballots(election_url) {
 
                            });
 
-                           result_append("<h3>FINAL RESULT</h3>");
+                           result_append("<h3>ENDGÜLTIGES ERGEBNIS</h3>");
 
                            if (overall_result) {
-                             result_append("ELECTION FULLY VERIFIED -- SUCCESS!");
+                             result_append("WAHL VOLLSTÄNDIG VERIFIZIERT -- ERFOLG!");
                            } else {
-                             result_append("VERIFICATION FAILED");
+                             result_append("VERIFIZIERUNG FEHLGESCHLAGEN");
                            }
                         });
                     });
@@ -244,37 +244,37 @@ function load_election_and_ballots(election_url) {
 
             });
     } catch (error) {
-        result_append("<p>It appears that you are trying to verify a private election.</p>");
-        result_append('<p>You can log in as a valid voter or log in as the election admin.</p>');
-        result_append('<a class="btn" href="' + election_url + '">Log in as a valid voter </a>');
-        result_append('<a class="btn" href="/auth/?return_url=/verifier/verify.html?election_url=' + election_url + '">Log in as the election admin</a>');
+        result_append("<p>Es sieht so aus, als würdest du versuchen, eine private Wahl zu verifizieren.</p>");
+        result_append('<p>Du kannst dich als gültiger Wähler anmelden oder als Wahladministrator.</p>');
+        result_append('<a class="btn" href="' + election_url + '">Als gültiger Wähler anmelden</a>');
+        result_append('<a class="btn" href="/auth/?return_url=/verifier/verify.html?election_url=' + election_url + '">Als Wahladministrator anmelden</a>');
     }
     });
-        
+
 }
 
 $(document).ready(function() {
    var election_url = $.query.get('election_url');
-   $('#election_url').val(election_url); 
+   $('#election_url').val(election_url);
 });
 </script>
 </head>
 <body>
 <div id="wrapper">
 <div id="banner">
-    Helios Election Verifier
+    Helios-Wahl-Verifizierung
 </div>
 <div id="content">
 
 <div id="verifier_loading">
-loading verifier ...
+Verifizierer wird geladen...
 </div>
 
 <div id="verifier" align="center" style="display:none;">
-Enter the Election URL:
+Gib die Wahl-URL ein:
 <form onsubmit="try{load_election_and_ballots(this.election_url.value);} catch (e) {} return false;">
     <input type="text" size="50" name="election_url" id="election_url" /><br />
-    <input type="submit" value="start verification" />
+    <input type="submit" value="Verifikation starten" />
 </form>
 </div>
 
