@@ -1,7 +1,25 @@
 # Helios Election System
 
-Helios is an end-to-end verifiable voting system.
+[Helios Repository](https://github.com/benadida/helios-server)
 
-[![Travis Build Status](https://travis-ci.org/benadida/helios-server.svg?branch=master)](https://travis-ci.org/benadida/helios-server)
+MHN-Wahlserver (http://wahl.mind-hochschul-netzwerk.de)
 
-[![Stories in Ready](https://badge.waffle.io/benadida/helios-server.png?label=ready&title=Ready)](https://waffle.io/benadida/helios-server)
+## Container lokal bauen und starten
+
+### Abhängigkeiten
+
+[traefik](https://github.com/Mind-Hochschul-Netzwerk/traefik) und [ldap](https://github.com/Mind-Hochschul-Netzwerk/ldap) müssen laufen.
+
+### Konfiguration
+
+`env.sample` als Vorlage für `.env` verwenden und diese dann bearbeiten
+
+### bauen und starten
+
+    $ make up
+    $ make createadmin
+
+Der Login ist dann im Browser unter [https://wahl.docker.localhost/auth/password/login](https://wahl.docker.localhost/auth/password/login) erreichbar. Die Sicherheitswarnung wegen des Zertifikates kann weggeklickt werden.
+
+* Benutzername: Webteam
+* Passwort: webteam1
