@@ -1,3 +1,7 @@
 docker/volumes
 .github
 .git
+Makefile
+Dockerfile
+README.md
+compose.yml

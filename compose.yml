@@ -39,7 +39,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: helios-server:local
+    image: ghcr.io/mind-hochschul-netzwerk/helios-server:latest
     restart: unless-stopped
     container_name: ${SERVICENAME}
     depends_on:
@@ -87,7 +87,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: helios-server:local
+    image: ghcr.io/mind-hochschul-netzwerk/helios-server:latest
     restart: unless-stopped
     command: uv run celery --app helios worker --events --beat --concurrency 4
     depends_on:

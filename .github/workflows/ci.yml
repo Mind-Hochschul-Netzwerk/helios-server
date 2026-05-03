@@ -5,6 +5,9 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  schedule:
+    - cron: '23 2 * * 1'
+  workflow_dispatch:
 
 jobs:
   test:
@@ -59,3 +62,11 @@ jobs:
 
       - name: Run tests
         run: uv run python -Wall manage.py test -v 2 --settings=settings_ci
+
+  build-and-push-image:
+    uses: Mind-Hochschul-Netzwerk/.github/.github/workflows/ci.yaml@main
+    with:
+      registry: ${{ vars.REGISTRY }}
+      image_name: ${{ vars.IMAGE_NAME }}
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
