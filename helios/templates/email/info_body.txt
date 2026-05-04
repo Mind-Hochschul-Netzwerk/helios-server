@@ -1,4 +1,4 @@
-Dear {{voter.name}},
+Hallo {{voter.name}},
 
 {{custom_message|safe}}
 
@@ -6,6 +6,6 @@ Dear {{voter.name}},
 Helios
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Wenn du keine E-Mails mehr von Helios erhalten möchtest, klicke hier:
 {{ unsubscribe_url }}
 {% endif %}

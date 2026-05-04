@@ -1,24 +1,24 @@
-Dear {{voter.name}},
+Hallo {{voter.name}},
 
-The tally for {{election.name}} has been computed and released:
+Die Auszählung für {{election.name}} wurde berechnet und veröffentlicht:
 
   {{election_url}}
 
 {{custom_message|safe}}
 
-{% if voter.vote_hash %}Your ballot tracker in this election was:
+{% if voter.vote_hash %}Dein Stimmzettel-Tracker in dieser Wahl war:
 
   {{voter.vote_hash}}
 
-If you believe this tracker to be in error, please contact us.
+Wenn du denkst, dass dieser Tracker fehlerhaft ist, kontaktiere uns bitte.
 {% else %}
-It appears you did not cast a vote in this election.
-Please contact us if you believe you did.
+Es sieht so aus, als hättest du in dieser Wahl keine Stimme abgegeben.
+Bitte kontaktiere uns, wenn du glaubst, dass du abgestimmt hast.
 {% endif %}
 --
 Helios
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Wenn du keine E-Mails mehr von Helios erhalten möchtest, klicke hier:
 {{ unsubscribe_url }}
 {% endif %}

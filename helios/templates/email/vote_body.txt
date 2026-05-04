@@ -1,39 +1,37 @@
-Dear {{voter.name}},
+Hallo {{voter.name}},
 
 {{custom_message|safe}}
 
-Election URL (click to begin voting):
+Wahl-URL (klicke hier, um mit der Abstimmung zu beginnen):
 {{election_vote_url}}
 
 {% if voter.voter_type == "password" %}
-Your voter ID: {{voter.voter_login_id}}
-Your password: {{voter.voter_password}}
+Deine Wähler-ID: {{voter.voter_login_id}}
+Dein Passwort: {{voter.voter_password}}
 {% else %}
-Log in with your {{voter.voter_type}} account.
+Melde dich mit deinem {{voter.voter_type}}-Konto an.
 {% endif %}{% if voter.vote_hash %}
-We have recorded your vote with ballot tracker:
+Wir haben deine Stimme mit diesem Stimmzettel-Tracker erfasst:
 
   {{voter.vote_hash}}
 
-You may re-vote if you wish: only your last vote counts.
+Du kannst erneut abstimmen, wenn du möchtest: Es zählt nur deine letzte Stimme.
 {% endif %}{% if election.use_voter_aliases %}
-In order to protect your privacy, this election is configured
-to never display your voter login ID, name, or email address to the public.
-Instead, the ballot tracking center will only display your alias.
+Um deine Privatsphäre zu schützen, zeigt diese Wahl niemals deine Wähler-Anmelde-ID, deinen Namen oder deine E-Mail-Adresse öffentlich an.
+Stattdessen zeigt das Stimmverfolgungszentrum nur deinen Alias an.
 
-Your voter alias is {{voter.alias}}.
+Dein Wähler-Alias ist {{voter.alias}}.
 
-IMPORTANTLY, when you are prompted to log in to vote,
-please use your *voter ID*, not your alias.
+WICHTIG: Wenn du dazu aufgefordert wirst, dich zur Abstimmung anzumelden,
+verwende bitte deine *Wähler-ID*, nicht deinen Alias.
 {% endif %}
 
-You may wish to verify the election fingerprint at the bottom of
-the screen when you vote:  {{voter.election.hash}}
+Du kannst den Wahl-Fingerabdruck am unteren Bildschirmrand bei der Abstimmung überprüfen:  {{voter.election.hash}}
 
 --
 Helios
 
 {% if unsubscribe_url %}
-To stop receiving all emails from Helios, click here:
+Wenn du keine E-Mails mehr von Helios erhalten möchtest, klicke hier:
 {{ unsubscribe_url }}
 {% endif %}
