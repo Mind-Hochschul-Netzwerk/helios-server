@@ -61,14 +61,6 @@ services:
       DEFAULT_FROM_EMAIL: ${ADMIN_EMAIL}
       TIME_ZONE: Europe/Berlin
       LDAP_BIND_PASSWORD: ${LDAP_BIND_PASSWORD}
-    volumes:
-      - ./server_ui/media:/app/server_ui/media:ro
-      - ./server_ui/templates:/app/server_ui/templates:ro
-      - ./heliosbooth:/app/heliosbooth:ro
-      - ./helios_auth/media:/app/helios_auth/media:ro
-      - ./helios_auth/templates:/app/helios_auth/templates:ro
-      - ./helios/media:/app/helios/media:ro
-      - ./helios/templates:/app/helios/templates:ro
     networks:
       - default
       - traefik
