@@ -131,7 +131,7 @@ werden die Treuhänder gebeten, ihren Anteil an der Entschlüsselung bereitzuste
 {% if election.result %}
 <a href="{% url "election@release-result" election.uuid %}">Ergebnis veröffentlichen</a><br />
 Das unten angezeigte Ergebnis ist nur für dich sichtbar.<br />
-Sobald du das Ergebnis veröffentlichen, ist es für alle sichtbar.
+Sobald du das Ergebnis veröffentlichst, ist es für alle sichtbar.
 {% else %}
 
 {% if election.ready_for_decryption_combination %}
@@ -215,8 +215,8 @@ Diese Wahl ist <em>privat</em>. Du bist Wahlberechtige*r <em>{{voter.name}}</em>
 {% endif %}
 
 <div class="highlight-box round" style="font-size: 1.2em; margin-right: 400px; display:none;" id="nojava_message">
-Sie haben Java nicht in Ihrem Browser installiert.<br />Derzeit erfordert Helios Java.<br />
-Besuchen Sie <a target="_new" href="http://java.sun.com">java.sun.com</a> um es zu installieren.
+Du hast Java in deinem Browser installiert.<br />Derzeit erfordert Helios Java.<br />
+Besuchen <a target="_new" href="http://java.sun.com">java.sun.com</a> um es zu installieren.
 </div>
 <br />
 {% else %}
@@ -239,12 +239,12 @@ Dein Wähler-Alias ist {{voter.alias}}.
 {% else %}
 {% if election.openreg %}
 {% if eligible_p %}
-Du bist berechtigt abzustimmen.
+Du bist stimmberechtigt.
 {% else %}
-Du bist <em>nicht berechtigt</em> abzustimmen.
+Du bist <em>nicht</em> stimmberechtigt.
 {% endif %}
 {% else %}
-Du bist <em>nicht berechtigt</em> abzustimmen.
+Du bist <em>nicht</em> stimmberechtigt.
 <br />
 {% endif %}
 {% endif %}

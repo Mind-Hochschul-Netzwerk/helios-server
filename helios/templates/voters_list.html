@@ -139,7 +139,6 @@ Wähler {{voters_page.start_index}} - {{voters_page.end_index}} (von {{total_vot
 {% if admin_p %}
 <th style="width: 80px;">Aktionen</th>
 <th>Anmeldename</th>
-<th>E-Mail-Adresse</th>
 {% endif %}
 <th>Name</th>
 {% endif %}
@@ -164,7 +163,6 @@ Wähler {{voters_page.start_index}} - {{voters_page.end_index}} (von {{total_vot
 {% if can_modify_voters %}[<a onclick="return confirm('Bist du sicher, dass du {{voter.name}} entfernen möchtest?');" href="{% url "election@voter@delete" election.uuid voter.uuid %}">x</a>]{% endif %}
 </td>
 <td>{{voter.voter_login_id}}</td>
-<td>{{voter.voter_email}}</td>
 {% endif %}
 <td><img class="small-logo" src="/static/auth/login-icons/{{voter.voter_type}}.png" alt="{{voter.voter_type}}" /> {{voter.name}}</td>
 {% endif %}
