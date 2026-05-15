@@ -1,4 +1,4 @@
-<h3>Überprüfe deine Stimmzettel</h3>
+<h3>Überprüfe deinen Stimmzettel</h3>
 
 <div style="padding: 10px; margin-bottom: 10px; background-color: #eee; border: 1px #ddd solid;">
 {#foreach $T.questions as question}
@@ -35,7 +35,7 @@ Frage #{$T.question$index + 1}: {$T.question.short_name}<br>
 
 {#if $T.election_metadata.use_advanced_audit_features}
 <div style="background: lightyellow; padding: 10px; border: 1px solid #ddd; max-width: 340px;">
-<h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Ungültig machen & Prüfen</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
+<h4 style="padding: 0px; margin:0px;"><a onclick="$('#auditbody').slideToggle(250);" href="#">Ungültig machen und prüfen</a> <span style="font-size: 0.8em; color: #444">[optional]</span></h4>
 <div id="auditbody" style="display:none;">
 <p>
 Wenn du möchtest, kannst du diesen Stimmzettel ungültig machen und offenlegen, wie deine Auswahl verschlüsselt wurde. Dies ist ein optionaler Prüfprozess.
